@@ -33,6 +33,15 @@
     <!-- Navbar -->
     {% include 'components/navbar.html' %}
 
+    <!-- Messages -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{message.tags}}{%endif %}">
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+
     <!-- Content -->
     {% block content %}{% endblock %}
 

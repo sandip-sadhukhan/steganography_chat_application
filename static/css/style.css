@@ -1,24 +1,54 @@
 #home {
-    background: #C9D6FF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    clip-path: ellipse(85% 100% at 50% 0%);
+  background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  clip-path: ellipse(85% 100% at 50% 0%);
 }
 
 #developers {
-    background: #C9D6FF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+  clip-path: ellipse(105% 100% at 49.45% 100%);
+}
 
-    clip-path: ellipse(105% 100% at 49.45% 100%);
+#loginCard,
+#SignupCard {
+  background: #70e1f5; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ffd194,
+    #70e1f5
+  ) !important; /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffd194,
+    #70e1f5
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 @media only screen and (max-width: 600px) {
-    #home {
-        clip-path: ellipse(243% 100% at 50% 0%) !important;
-    }
-    #developers {
-        clip-path: ellipse(273% 100% at 50% 100%) !important;
-    }
+  #home {
+    clip-path: ellipse(243% 100% at 50% 0%) !important;
+  }
+  #developers {
+    clip-path: ellipse(273% 100% at 50% 100%) !important;
+  }
 }

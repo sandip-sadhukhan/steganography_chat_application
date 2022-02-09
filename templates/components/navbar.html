@@ -27,10 +27,10 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#features">Features</a>
+          <a class="nav-link" href="/#features">Features</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#developers">Developers</a>
+          <a class="nav-link" href="/#developers">Developers</a>
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
@@ -45,17 +45,17 @@
             Welcome, Sandip
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Dashboard</a></li>
+            <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
           </ul>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="btn btn-light" href="#">Login</a>
+          <a class="btn btn-light" href="{% url 'login' %}">Login</a>
         </li>
         <li class="nav-item">
-          <a class="btn btn-outline-light nav-link" href="#">SignUp</a>
+          <a class="btn btn-outline-light nav-link" href="{% url 'signup' %}">SignUp</a>
         </li>
         {% endif %}
       </ul>

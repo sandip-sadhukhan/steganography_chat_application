@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+<section id="signup" class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mx-auto">
+                <div class="card card-body" id="SignupCard">
+                    <h3 class="text-center mb-4">SignUp</h3>
+                    <form action="{% url 'signup' %}" method="post" id="signupForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group mb-2">
+                                    <label for="first_name">First Name</label>
+                                    <input 
+                                    type="text" class="form-control" 
+                                    placeholder="John" name="first_name" required autofocus>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group mb-2">
+                                    <label for="last_name">Last Name</label>
+                                    <input 
+                                    type="text" class="form-control" 
+                                    placeholder="Doe" name="last_name" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group mb-2">
+                                    <label for="username">Username</label>
+                                    <input type="text" name="username" class="form-control" placeholder="john123" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group mb-2">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" name="email" class="form-control" placeholder="john@email.com" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group mb-2">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" id="password"
+                                    class="form-control" placeholder="*******" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group mb-2">
+                                    <label for="confirm_password">Confirm Password</label>
+                                    <input type="password" id="confirm_password"
+                                    class="form-control" placeholder="*******" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-light mt-4" type="submit">Sign Up</button>
+                        </div>
+                        <p class="mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+<script>
+    const onSubmit = (e) => {
+        e.preventDefault()
+        let password = document.getElementById('password').value
+        let confirmPassword = document.getElementById('confirm_password').value
+        if (password !== confirmPassword){
+            alert("Both Passwords didn't match")
+        }else {
+            document.getElementById('signupForm').submit()
+        }
+
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', onSubmit);
+
+</script>
+{% endblock %}
