@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- internal css -->
+    {% block css %}{% endblock %}
+    
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="{% static 'images/favicon.png' %}"
+      type="image/x-icon"
+    />
+
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    {% include 'components/navbar.html' %}
+
+    <!-- Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    {% include 'components/footer.html' %}
+
+    <!-- Bootstrap Js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <!-- internal js -->
+    {% block js %}{% endblock %}
+  </body>
+</html>
