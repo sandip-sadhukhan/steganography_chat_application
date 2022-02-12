@@ -1,1 +1,145 @@
 {% extends 'base.html' %}
+{% block title %}Chat{% endblock %}
+{% block content %}
+<section id="chat" class="my-3">
+    <h3 class="text-center"> <a id="backBtn" href="#" class="btn btn-outline-danger me-3"><i class="bi bi-arrow-left"></i></a> Chat with {{opponent.username}} </h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-sm-12 mx-auto">
+                <hr>
+                <div class="card card-body bg-light" style="height: 65vh;overflow: auto;" id="chatStore"></div>
+                <form id="sendMsgForm">
+                    <div class="d-flex justify-content-between mt-2">
+                        <input type="text" class="form-control me-2" placeholder="Enter text..." id="msgBody" autofocus  autocomplete="off">
+                        <button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{{user.id|json_script:"me"}}
+{{opponent.id|json_script:"opponent"}}
+{% endblock %}
+{% block js %}
+<script>
+    // back button 
+    document.getElementById('backBtn').addEventListener('click', () => {
+        history.back()
+    })
+
+    // User ids
+    const myUserId = parseInt(JSON.parse(document.getElementById('me').textContent))
+    const opponentUserId = parseInt(JSON.parse(document.getElementById('opponent').textContent))
+
+    // functions
+    const notificationSound = () => {
+        let audio = new Audio('/static/sounds/chat.mp3')
+        audio.play()
+    }
+    const displayMyMessage = (message) => {
+        let msg = document.createElement('div') 
+        msg.classList.add('d-flex')
+        msg.classList.add('justify-content-end')
+        msg.classList.add('my-1')
+        let msgButton = document.createElement('button')
+        msgButton.classList.add('btn')
+        msgButton.classList.add('btn-sm')
+        msgButton.classList.add('btn-success')
+        msgButton.textContent = message.message
+        msg.append(msgButton)
+        return msg
+    }
+
+    const displayOpponentMessage = (message) => {
+        let msg = document.createElement('div') 
+        msg.classList.add('d-flex')
+        msg.classList.add('justify-content-start')
+        msg.classList.add('my-1')
+        let msgButton = document.createElement('button')
+        msgButton.classList.add('btn')
+        msgButton.classList.add('btn-sm')
+        msgButton.classList.add('btn-info')
+        msgButton.textContent = message.message
+        msg.append(msgButton)
+        return msg
+    }
+
+    const displayMessage = (message) => {
+        let chatElement
+        if(message.sender === myUserId){
+            chatElement = displayMyMessage(message)
+        }else{
+            chatElement = displayOpponentMessage(message)
+        }
+        document.getElementById('chatStore').append(chatElement)
+    }
+
+    const displayMessages = (messages) => {
+        messages.forEach(message => {
+            displayMessage(message)
+        })
+    }
+
+    // websocket
+    const ws_scheme = location.protocol === 'https:'? 'wss': 'ws'
+
+    let chatPath;
+    if(myUserId > opponentUserId){
+        chatPath = `${opponentUserId}/${myUserId}/`
+    }else {
+        chatPath = `${myUserId}/${opponentUserId}/`
+    } 
+    const client = new WebSocket(`${ws_scheme}://${location.host}/ws/chat/${chatPath}`)
+
+    client.onopen = (e) => {
+        console.log("Websocket Connected")
+
+        // fetch messages
+        client.send(JSON.stringify({
+            type: 'fetch_messages'
+        }))
+    }
+
+    client.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        // console.log(data)
+        if(data['type'] === 'fetch_messages'){
+            displayMessages(data['messages'])
+        }else if(data['type'] === 'send_message'){
+            displayMessage(data['message'])
+            if(data['message'].sender === opponentUserId){
+               notificationSound() 
+            }
+        }
+        
+        // scrolling to bottom
+        let chatStore = document.getElementById('chatStore')
+        chatStore.scrollTop = chatStore.scrollHeight
+    }
+
+    client.onerror = (e) => {
+        console.error("Websocket Closed")
+    }
+    
+    client.onclose = (e) => {
+        console.error("Websocket Closed")
+    }
+
+    // message sending
+    // Normal Text
+    document.getElementById('sendMsgForm').addEventListener('submit', (e) => {
+        e.preventDefault()
+        let message = document.getElementById('msgBody').value
+        if (message === '') return;
+        client.send(JSON.stringify({
+            type: 'send_message',
+            message,
+            fileURL: null
+        }))
+        document.getElementById('msgBody').value = ""
+    })
+
+</script>
+
+{% endblock %}

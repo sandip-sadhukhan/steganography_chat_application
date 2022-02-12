@@ -55,9 +55,18 @@ def logout(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'pages/dashboard.html')
+    users = User.objects.all()
+    users = users.exclude(id=request.user.id)
+    context = {'users': users}
+    return render(request, 'pages/dashboard.html', context)
 
 
 @login_required
-def chat(request):
-    return render(request, 'pages/chat.html')
+def chat(request, username):
+    me = request.user
+    opponent = User.objects.get(username=username)
+    context = {
+        'me': me,
+        'opponent': opponent
+    }
+    return render(request, 'pages/chat.html', context)
