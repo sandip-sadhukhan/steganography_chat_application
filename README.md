@@ -9,6 +9,7 @@ This is an advance steganography application. You can sent messages securely.
 - Python 3
 - Pip
 - Venv (pip install virtualenv)
+- Redis
 
 ### Installation
 
@@ -40,7 +41,13 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-5. Migrate and Run the server
+5. Run Redis Server
+
+```bash
+redis-server
+```
+
+6. Migrate and Run the server
 
 ```bash
 # migration
@@ -50,4 +57,4 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-6. Now open http://localhost:8000 in your browser.
+7. Now open http://localhost:8000 in your browser.

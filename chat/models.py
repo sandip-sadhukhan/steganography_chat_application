@@ -11,14 +11,15 @@ class ChatMessage(models.Model):
     message = models.CharField(max_length=1000, null=True, blank=True)
     fileURL = models.URLField(max_length=500, null=True, blank=True)
     is_read = models.BooleanField(default=False)
+    # image is steganographic or not
+    steganographyImage = models.BooleanField(default=False)
+    # image is password protected or not
+    passwordProtectedSteganographyImage = models.BooleanField(default=False)
 
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ("timestamp",)
-
-    def __str__(self):
-        return self.message
 
     def serialize(self):
         return {
@@ -43,4 +44,4 @@ class ImageStore(models.Model):
     image = models.ImageField(upload_to="uploads/%Y/%m/%d/")
 
     def get_image_url(self):
-        return self.image.name
+        return f"/media/{self.image.name}"
