@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import ImageStore
+from stegano import lsb
+from .utils import get_random_text
 
 
 def home(request):
@@ -84,3 +86,35 @@ def uploadImage(request):
     else:
         imageStore = ImageStore.objects.create(user=request.user, image=image)
         return JsonResponse({"success": True, "fileURL": imageStore.get_image_url()})
+
+
+# Steganography Encrept
+@login_required
+def encryptImage(request):
+    if request.method == "POST":
+        image = request.FILES.get("image")
+        text = request.POST.get("text")
+        if image is None:
+            return JsonResponse({"success": False, "error": "Image not found"})
+        elif text is None or len(text) == 0:
+            return JsonResponse({"success": False, "error": "Text not found"})
+        else:
+            secret = lsb.hide(image, text)
+            imagePath = f"./media/stegno_temp/{get_random_text(6)}_{image.name}"
+            secret.save(imagePath)
+            return JsonResponse({"success": True, "fileURL": imagePath[1:]})
+    else:
+        return HttpResponse("<h1>Get request not allowed!</h1>")
+
+
+# Steganography Decrypt
+def decryptImage(request):
+    if request.method == "POST":
+        imageURL = request.POST.get("image")
+        if imageURL is None:
+            return JsonResponse({"success": False, "error": "Image not found"})
+        else:
+            secretText = lsb.reveal(f"./{imageURL}")
+            return JsonResponse({"success": True, "secretText": secretText})
+    else:
+        return HttpResponse("<h1>Get request not allowed!</h1>")

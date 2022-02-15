@@ -27,6 +27,8 @@ class ChatMessage(models.Model):
             "receiver": self.receiver.id,
             "message": self.message,
             "fileURL": self.fileURL,
+            "steganographyImage": self.steganographyImage,
+            "passwordProtectedSteganographyImage": self.passwordProtectedSteganographyImage,
             "timestamp": self.timestamp.isoformat(),
         }
 

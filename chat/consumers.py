@@ -36,7 +36,9 @@ class ChatConsumer(WebsocketConsumer):
             'sender': '3',
             'receiver': '2', # userid
             'message': 'Hello!',
-            'fileURL': '/media/hello.jpg' # if any
+            'fileURL': '/media/hello.jpg' # if any,
+            'steganographyImage': True/False,
+            'passwordProtectedSteganographyImage': True/False
         }
         """
         user1_id = int(self.scope["url_route"]["kwargs"]["user1"])
@@ -50,6 +52,7 @@ class ChatConsumer(WebsocketConsumer):
         elif user.id == user2_id:
             receiver = User.objects.get(id=user1_id)
 
+
         if data["type"] == "fetch_messages":
             self.send(
                 text_data=json.dumps(
@@ -60,12 +63,17 @@ class ChatConsumer(WebsocketConsumer):
                 )
             )
         elif data["type"] == "send_message":
+            steganographyImage = data.get('steganographyImage', False)
+            passwordProtectedSteganographyImage = data.get('passwordProtectedSteganographyImage', False)
+
             # create message object
             msg = ChatMessage.objects.create(
                 sender=sender,
                 receiver=receiver,
                 message=data.get("message"),
                 fileURL=data.get("fileURL"),
+                steganographyImage= steganographyImage,
+                passwordProtectedSteganographyImage=passwordProtectedSteganographyImage
             )
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name, {"type": "send_data", "data": msg.serialize()}

@@ -9,4 +9,6 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("chat/<str:username>/", views.chat, name="chat"),
     path("upload-image/", views.uploadImage, name="uploadImage"),
+    path("encrypt-image/", views.encryptImage, name="encryptImage"),
+    path("decrypt-image/", views.decryptImage, name="decryptImage"),
 ]
