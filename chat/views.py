@@ -1,6 +1,10 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
-from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
+from django.contrib.auth import (
+    login as auth_login,
+    logout as auth_logout,
+    authenticate,
+)
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -20,10 +24,14 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            messages.add_message(request, messages.SUCCESS, "Logged in successfully.")
+            messages.add_message(
+                request, messages.SUCCESS, "Logged in successfully."
+            )
             return redirect("/dashboard")
         else:
-            messages.add_message(request, messages.ERROR, "Credentials not correct.")
+            messages.add_message(
+                request, messages.ERROR, "Credentials not correct."
+            )
             return redirect("/login")
     return render(request, "pages/login.html")
 
@@ -47,10 +55,14 @@ def signup(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            messages.add_message(request, messages.SUCCESS, "Signed up successfully.")
+            messages.add_message(
+                request, messages.SUCCESS, "Signed up successfully."
+            )
             return redirect("/dashboard")
         else:
-            messages.add_message(request, messages.ERROR, "Credentials not correct.")
+            messages.add_message(
+                request, messages.ERROR, "Credentials not correct."
+            )
             return redirect("/signup")
 
     return render(request, "pages/signup.html")
@@ -85,7 +97,9 @@ def uploadImage(request):
         return JsonResponse({"success": False, "error": "Image not found"})
     else:
         imageStore = ImageStore.objects.create(user=request.user, image=image)
-        return JsonResponse({"success": True, "fileURL": imageStore.get_image_url()})
+        return JsonResponse(
+            {"success": True, "fileURL": imageStore.get_image_url()}
+        )
 
 
 # Steganography Encrept
@@ -100,7 +114,9 @@ def encryptImage(request):
             return JsonResponse({"success": False, "error": "Text not found"})
         else:
             secret = lsb.hide(image, text)
-            imagePath = f"./media/stegno_temp/{get_random_text(6)}_{image.name}"
+            imagePath = (
+                f"./media/stegno_temp/{get_random_text(6)}_{image.name}"
+            )
             secret.save(imagePath)
             return JsonResponse({"success": True, "fileURL": imagePath[1:]})
     else:
