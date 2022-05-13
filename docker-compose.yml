@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: redis_stegno_1
+    ports:
+      - 6379:6379
+
+  web:
+    build: . #build the image for the web service from the dockerfile in parent directory
+    command: daphne core.asgi:application --bind 0.0.0.0
+    volumes:
+      - .:/microservice:rw # map data and files from parent directory in host to microservice directory in docker containe
+      - static_volume:/home/app/microservice/static_files
+    image: chat_notification_app
+
+    expose:
+      - 8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+    restart: "on-failure"
+    depends_on:
+      - redis
+    links:
+      - redis
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - static_volume:/home/app/microservice/static_files
+    depends_on:
+      - web
+    restart: "on-failure"
+
+volumes:
+  static_volume:
