@@ -1,0 +1,11 @@
+1. Docker install
+2. Docker compose install
+3. Git install
+4. Git clone repo
+5. git checkout prod
+6. docker-compose up --build -d
+7. docker ps
+8. docker exec -it container_id /bin/bash
+9. python manage.py migrate
+10. python manage.py collectstatic
+11. Create /media/stegno_temp/
